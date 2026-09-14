@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>הזמנה לחתונה של חיים</title>
+
+  <!-- הגדרות לתצוגה מקדימה בוואטסאפ (WhatsApp Preview) -->
+  <meta property="og:title" content="הזמנה לחתונה - חיים לוי">
+  <meta property="og:description" content="יום רביעי, י' חשוון תשפ''ז (21.10.26) | ארמונות חן, בני ברק">
+  <meta property="og:image" content="https://i.ibb.co/hJWqYNsD/1787553673135.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Frank+Ruhl+Hofshi:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #080808;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 50% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+      color: #f3e5ab;
+      font-family: 'Assistant', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 15px;
+      direction: rtl;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 460px;
+      text-align: center;
+      position: relative;
+      padding: 25px 15px;
+      z-index: 2;
+    }
+    .invitation-img-container {
+      margin-bottom: 25px;
+    }
+    .invitation-img {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    }
+    .ornament {
+      color: #d4af37;
+      font-size: 20px;
+      margin-bottom: 25px;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .ornament::before, .ornament::after {
+      content: "";
+      height: 1px;
+      width: 70px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    }
+    h1.title {
+      font-family: 'Frank Ruhl Hofshi', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #f3e5ab;
+      line-height: 1.4;
+      margin-bottom: 25px;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    }
+    .timer-title {
+      font-size: 20px;
+      color: #f3e5ab;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+    }
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 35px;
+    }
+    .timer-card {
+      background: rgba(18, 18, 18, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 10px;
+      padding: 10px 3px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    .timer-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: #e6c667;
+      line-height: 1.1;
+    }
+    .timer-label {
+      font-size: 11px;
+      color: #a39572;
+      margin-top: 5px;
+    }
+    .event-details { margin-bottom: 35px; }
+    .hebrew-date { font-size: 20px; font-weight: 600; color: #e6c667; margin-bottom: 6px; }
+    .gregorian-date { font-size: 15px; color: #bbb; margin-bottom: 20px; direction: ltr; }
+    .venue-name { font-size: 22px; font-weight: 700; color: #e6c667; margin-bottom: 4px; }
+    .venue-address { font-size: 15px; color: #aaa; }
+    .greeting-section { margin-bottom: 35px; }
+    .greeting-text { font-size: 15px; color: #aaa; margin-bottom: 6px; }
+    .hosts-names { font-size: 20px; font-weight: 600; color: #f3e5ab; }
+    .buttons-container { display: flex; flex-direction: column; gap: 14px; }
+    .btn {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    
+    /* לחצן יומן בצבע זהב מודגש */
+    .btn-calendar {
+      background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+      color: #111111;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    }
+    .btn-calendar:hover {
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+    }
+
+    /* לחצן Waze */
+    .btn-waze {
+      background: #005693;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 86, 147, 0.3);
+    }
+    .btn-waze:hover {
+      box-shadow: 0 6px 18px rgba(0, 86, 147, 0.5);
+    }
+    .waze-icon {
+      width: 24px;
+      height: 24px;
+      background: #33ccff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: bold;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="container">
+    <div class="ornament">✦</div>
+
+    <div class="invitation-img-container">
+      <img src="https://i.ibb.co/hJWqYNsD/1787553673135.jpg" alt="הזמנה לחתונה" class="invitation-img">
+    </div>
+
+    <h1 class="title">חתונת בנינו היקר<br>חיים</h1>
+
+    <div class="timer-title">נותר עד לשמחה</div>
+    <!-- סדר הכרטיסיות מימין לשמאל: שניות -> דקות -> שעות -> ימים -> שבועות -->
+    <div class="countdown-grid">
+      <div class="timer-card">
+        <span class="timer-num" id="seconds">00</span>
+        <span class="timer-label">שניות</span>
+      </div>
+      <div class="timer-card">
+        <span class="timer-num" id="minutes">00</span>
+        <span class="timer-label">דקות</span>
+      </div>
+      <div class="timer-card">
+        <span class="timer-num" id="hours">00</span>
+        <span class="timer-label">שעות</span>
+      </div>
+      <div class="timer-card">
+        <span class="timer-num" id="days">00</span>
+        <span class="timer-label">ימים</span>
+      </div>
+      <div class="timer-card">
+        <span class="timer-num" id="weeks">00</span>
+        <span class="timer-label">שבועות</span>
+      </div>
+    </div>
+
+    <div class="ornament" style="margin-bottom: 25px;">✦</div>
+
+    <div class="event-details">
+      <div class="hebrew-date">יום רביעי, י' חשוון תשפ"ז</div>
+      <div class="gregorian-date">21.10.2026 | קבלת פנים 18:00 | חופה 18:30</div>
+      <div class="venue-name">אולמי ארמונות חן</div>
+      <div class="venue-address">רחוב שלמה המלך 29, בני ברק</div>
+    </div>
+
+    <div class="ornament" style="margin-bottom: 25px;">✦</div>
+
+    <div class="greeting-section">
+      <div class="greeting-text">נשמח לראותכם</div>
+      <div class="hosts-names">יוסי וברכי לוי</div>
+    </div>
+
+    <div class="buttons-container">
+      
+      <!-- קישור יומן גוגל: 18:30 עד 21:00, מיקום: אולמי ארמונות חן בני ברק -->
+      <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=%D7%97%D7%AA%D7%95%D7%A0%D7%AA%20%D7%97%D7%99%D7%99%D7%9D%20%D7%9C%D7%95%D7%99&dates=20261021T153000Z/20261021T180000Z&details=%D7%A0%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A8%D7%90%D7%95%D7%AA%D7%9B%D7%9D!%20%D7%99%D7%95%D7%A1%D7%99%20%D7%95%D7%91%D7%A8%D7%9B%D7%99%20%D7%9C%D7%95%D7%99&location=%D7%90%D7%A8%D7%9E%D7%95%D7%A0%D7%95%D7%AA%20%D7%97%D7%9F%20%D7%91%D7%A0%D7%99%20%D7%91%D7%A8%D7%A7&ctz=Asia/Jerusalem" target="_blank" rel="noopener noreferrer" class="btn btn-calendar">
+        <span>📅 הוסף ליומן גוגל</span>
+      </a>
+
+      <!-- כפתור Waze - פרוטוקול ישיר לפתיחת האפליקציה במכשיר -->
+      <a href="waze://?q=%D7%90%D7%A8%D7%9E%D7%95%D7%A0%D7%95%D7%AA%20%D7%97%D7%9F%20%D7%A9%D7%9C%D7%9D%D7%95%20%D7%90%D7%9C%D7%9E%D7%9C%D7%9A%2029%20%D7%91%D7%A0%D7%99%20%D7%91%D7%A8%D7%A7&navigate=yes" class="btn btn-waze">
+        <span>נווט לאולם — Waze</span>
+        <div class="waze-icon">W</div>
+      </a>
+
+    </div>
+
+  </div>
+
+  <script>
+    // תאריך החתונה: 21 באוקטובר 2026 בשעה 18:30
+    const targetDate = new Date("2026-10-21T18:30:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance <= 0) {
+        document.getElementById("weeks").innerText = "00";
+        document.getElementById("days").innerText = "00";
+        document.getElementById("hours").innerText = "00";
+        document.getElementById("minutes").innerText = "00";
+        document.getElementById("seconds").innerText = "00";
+        return;
+      }
+
+      const weeks = Math.floor(distance / (1000 * 60 * 60 * 24 * 7));
+      const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("weeks").innerText = weeks < 10 ? "0" + weeks : weeks;
+      document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+      document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+      document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+      document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // אפקט נצנצים ברקע
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const particleCount = 40;
+    const goldColors = ['#d4af37', '#f3e5ab', '#e6c667', '#ffffff', '#b8860b'];
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * -height;
+        this.size = Math.random() * 3 + 1.5;
+        this.speedY = Math.random() * 1.2 + 0.5;
+        this.speedX = Math.random() * 0.6 - 0.3;
+        this.color = goldColors[Math.floor(Math.random() * goldColors.length)];
+        this.opacity = Math.random() * 0.7 + 0.3;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 2 - 1;
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.x += Math.sin(this.y * 0.01) + this.speedX;
+        this.rotation += this.rotationSpeed;
+
+        if (this.y > height) {
+          this.reset();
+          this.y = -10;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+
+        ctx.beginPath();
+        ctx.moveTo(0, -this.size);
+        ctx.lineTo(this.size * 0.7, 0);
+        ctx.lineTo(0, this.size);
+        ctx.lineTo(-this.size * 0.7, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+
+    animateConfetti();
+  </script>
+</body>
+</html>
